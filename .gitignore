@@ -398,9 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 appsettings.Development.json
-# appPackage/
-# env/
-teamsapp.yml
 openapi/**/*.yml
 openapi/**/*.json
 plugin/**/*.json
