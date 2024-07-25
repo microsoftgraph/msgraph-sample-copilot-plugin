@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
+  "manifestVersion": "devPreview",
+  "version": "1.0.0",
+  "id": "7f3d7aac-f061-42dd-9335-a99a4d7fca3a",
+  "developer": {
+    "name": "Microsoft Kiota.",
+    "websiteUrl": "https://www.example.com/contact/",
+    "privacyUrl": "https://www.example.com/privacy/",
+    "termsOfUseUrl": "https://www.example.com/terms/"
+  },
+  "packageName": "com.microsoft.kiota.plugin.Budget Tracker",
+  "name": {
+    "short": "Budget Tracker",
+    "full": "API Plugin Budget Tracker for BudgetTracker"
+  },
+  "description": {
+    "short": "BudgetTracker",
+    "full": "BudgetTracker"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#FFFFFF",
+  "copilotExtensions": {
+    "plugins": [
+      {
+        "id": "Budget Tracker",
+        "file": "budget tracker-apiplugin.json"
+      }
+    ],
+    "declarativeCopilots": []
+  }
+}
