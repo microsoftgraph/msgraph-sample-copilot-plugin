@@ -1,9 +1,19 @@
 # Budget Tracker sample API
 
-## Sample prompts
+The Budget Tracker API is a simple example of a REST API that can be used as the basis of an [API plugin](https://learn.microsoft.com/microsoft-365-copilot/extensibility/overview-api-plugins) for Microsoft Copilot for Microsoft 365.
 
-- How much is left in the fourth coffee lobby renovation budget?
-- What is the status of existing budgets in budget tracker?
+## Features
+
+- [ASP.NET Core minimal API](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/overview)
+- [Secured with Microsoft Entra ID](https://learn.microsoft.com/entra/identity-platform/scenario-protected-web-api-app-configuration) using [Microsoft.Identity.Web](https://github.com/AzureAD/microsoft-identity-web)
+- OpenAPI generated automatically with [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+- Uses [on-behalf-of flow](https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow) to obtain an access token for Microsoft Graph
+
+## Prerequisites
+
+- [.NET SDK](https://dotnet.microsoft.com/) 8.x or later
+- [devtunnel CLI](https://learn.microsoft.com/azure/developer/dev-tunnels) for debugging sample locally
+- A Microsoft work or school account with an Exchange Online mailbox. If you don't have a Microsoft 365 tenant, you might qualify for one through the [Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program); for details, see the [FAQ](/office/developer-program/microsoft-365-developer-program-faq#who-qualifies-for-a-microsoft-365-e5-developer-subscription-). Alternatively, you can [sign up for a 1-month free trial or purchase a Microsoft 365 plan](https://www.microsoft.com/microsoft-365/try).
 
 ## Configure the sample
 
@@ -21,17 +31,9 @@ To configure the sample, you will need to generate a number of values. For clari
 | **Authorization endpoint** |                 |
 | **Token endpoint**         |                 |
 
-## Dev tunnel
+### Create a persistent dev tunnel
 
-### Install
-
-[Create and host a dev tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/get-started#install)
-
-```powershell
-winget install Microsoft.devtunnel
-```
-
-### Create persistent tunnel
+1. If you do not have the `devtunnel` CLI installed, see [Create and host a dev tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/get-started#install) for installation instructions.
 
 1. Create the tunnel.
 
@@ -59,7 +61,7 @@ winget install Microsoft.devtunnel
 
 Once you have enabled the tunnel in your browser, you can stop the tunnel with **CTRL + C**. You can restart the tunnel with the `devtunnel host host-id` command.
 
-## Register applications in Microsoft Entra admin center
+### Register applications in Microsoft Entra admin center
 
 This sample uses Microsoft Entra ID to secure the API. It is designed to run as a single-tenant application. Specifically,
 
@@ -69,7 +71,7 @@ This sample uses Microsoft Entra ID to secure the API. It is designed to run as 
 1. Open your browser and navigate to the [Microsoft Entra admin center](https://entra.microsoft.com/). Sign in with a **Work or School Account**.
 1. Select **Applications** in the left-hand navigation bar, then select **App registrations**.
 
-### Register the API
+#### Register the API
 
 1. Select **New registration**. Enter `Budget Tracker Service` as the name for your application.
 
@@ -116,7 +118,7 @@ This sample uses Microsoft Entra ID to secure the API. It is designed to run as 
 
 1. Select **Add scope**. Copy the new scope and save it as your **API scope**.
 
-### Register the plugin
+#### Register the plugin
 
 1. Return to the **App registrations** page in the Microsoft Entra admin center.
 
@@ -145,7 +147,7 @@ This sample uses Microsoft Entra ID to secure the API. It is designed to run as 
 
 1. Enable **access_as_user**, then select **Add permissions**.
 
-### Update API registration
+#### Update API registration
 
 In this step, you add the **Plugin client ID** value to the API registration to enable a [combined consent experience](https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow#default-and-combined-consent) when the user signs in to the plugin.
 
@@ -162,6 +164,38 @@ In this step, you add the **Plugin client ID** value to the API registration to 
         "your-plugin-client-id"
     ],
     ```
+
+### Update the sample
+
+1. Make a copy of [./api/appsettings.json](/api/appsettings.json) in the **./api** directory named **appsettings.Development.json**.
+
+1. Open **appsettings.Development.json** and update the following fields using your [generated configuration values](#configure-the-sample).
+
+    - Set `TenantId` to **Tenant ID**.
+    - Set `ClientId` to **API client ID**.
+    - Set `ClientSecret` to **API client secret**.
+    - Set `Audience` to `api://{client-secret}`, replacing `{client-secret}` with **API client ID**.
+    - Set `ServerUrl` to **API base URL**.
+
+## Run the sample
+
+You can run the sample in one of the following ways.
+
+- From the command line in the **./api** directory with the command `dotnet run`.
+- Open the root directory with Visual Studio Code and press **F5**.
+- Open **./api/BudgetTracker.csproj** with Visual Studio and press **F5**.
+
+Once the sample is running, you can test the API with one of these methods.
+
+- [Create an API plugin](https://learn.microsoft.com/microsoft-365-copilot/extensibility/build-api-plugins-existing-api) and use Microsoft Copilot for Microsoft 365 to interact with the API. See [Sample Copilot prompts](#sample-copilot-prompts) for some prompts to get you started.
+- [Register a device code app](/register-device-code.md) and use [BudgetTracker.http](./api/BudgetTracker.http) and the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) Visual Studio Code extension.
+
+### Sample Copilot prompts
+
+- How much is left in the fourth coffee lobby renovation budget?
+- What is the status of existing budgets in budget tracker?
+- Charge $500 to the Contoso Copilot plugin project for Megan Bowen's airfare
+- Send me a transaction report
 
 ## Contributing
 

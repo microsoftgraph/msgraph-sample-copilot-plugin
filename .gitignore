@@ -404,3 +404,4 @@ plugin/**/*.json
 plugin/**/*.yml
 *.zip
 .kiota/
+BudgetTracker-DevTunnel.http

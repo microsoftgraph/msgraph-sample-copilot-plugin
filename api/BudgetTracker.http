@@ -1,0 +1,84 @@
+@BudgetTracker_HostAddress = https://localhost:7196
+
+# @name GetBudgets
+GET {{BudgetTracker_HostAddress}}/budgets
+Accept: application/json
+Authorization: Bearer {{$aadV2Token scopes:api://API_CLIENT_ID/access_as_user tenantId:TENANT_ID clientId:API_CLIENT_ID}}
+
+###
+# @name GetBudgetByName
+GET {{BudgetTracker_HostAddress}}/budgets?budgetName=Contoso Copilot plugin project
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+###
+# @name CreateBudget
+POST {{BudgetTracker_HostAddress}}/budgets
+Content-Type: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+{
+  "name": "Copilot development",
+  "availableFunds": 1000.00
+}
+
+###
+# @name ChargeBudget
+POST {{BudgetTracker_HostAddress}}/budgets/charge
+Content-Type: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+{
+  "budgetName": "Contoso Copilot project",
+  "amount": 100.00,
+  "expenseCategory": "travel",
+  "description": "Parking charges"
+}
+
+###
+# @name ExtendBudget
+POST {{BudgetTracker_HostAddress}}/budgets/extend
+Content-Type: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+{
+  "budgetName": "",
+  "amount": 1.00,
+  "description": ""
+}
+
+###
+# @name GetTransactions
+GET {{BudgetTracker_HostAddress}}/transactions
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+###
+# @name GetTransactionsByCategory
+GET {{BudgetTracker_HostAddress}}/transactions?category=materials
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+###
+# @name GetTransactionsByBudtransactions/get
+GET {{BudgetTracker_HostAddress}}/transactions?budgetName=Alpine Ski house website redesign
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+###
+# @name GetTransactionsByBudgetAndCategory
+GET {{BudgetTracker_HostAddress}}/transactions?budgetName=Alpine Ski house website redesign&category=hosting
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+###
+# @name SendTransactionsReport
+POST {{BudgetTracker_HostAddress}}/transactions/send
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
+
+###
+# @name SendTransactionsReportByBudget
+POST {{BudgetTracker_HostAddress}}/transactions/send?budgetName=fourth coffee lobby renovation
+Accept: application/json
+Authorization: {{GetBudgets.request.headers.Authorization}}
