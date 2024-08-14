@@ -52,7 +52,7 @@ To configure the sample, you will need to generate a number of values. For clari
 1. Start the dev tunnel. Replace `tunnel-id` with ID copied in previous step.
 
     ```powershell
-    devtunnel host host-id
+    devtunnel host tunnel-id
     ```
 
 1. For the first time running this dev tunnel, copy the URL labeled **Connect via browser**. Open this URL in your browser and select **Continue** to enable the tunnel.
