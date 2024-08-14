@@ -196,6 +196,7 @@ Once the sample is running, you can test the API with one of these methods.
 - What is the status of existing budgets in budget tracker?
 - Charge $500 to the Contoso Copilot plugin project for Megan Bowen's airfare
 - Send me a transaction report
+- What transactions have posted to existing budgets?
 
 ## Contributing
 

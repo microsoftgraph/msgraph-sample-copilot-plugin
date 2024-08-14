@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Text.Json;
 using BudgetTracker.Models;
 using BudgetTracker.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -54,7 +55,7 @@ public static class TransactionsEndpoint
             .RequireAuthorization();
     }
 
-    private static Results<Ok<List<Transaction>>, BadRequest<ApiResponse>> GetTransactions(
+    private static Results<Ok<TransactionListResponse>, BadRequest<ApiResponse>> GetTransactions(
         HttpContext context,
         [FromQuery] string? budgetName,
         [FromQuery] string? category,
@@ -68,7 +69,7 @@ public static class TransactionsEndpoint
             logger.LogInformation("➡️ GET {api}", apiPath);
             var transactions = budgetService.GetTransactions(budgetName, category);
             logger.LogInformation("✅ GET {api} returning {count} transactions", apiPath, transactions.Count);
-            return TypedResults.Ok(transactions);
+            return TypedResults.Ok(new TransactionListResponse(transactions));
         }
         catch (Exception ex)
         {

@@ -36,4 +36,15 @@ public class Transaction
     /// </summary>
     /// <example>hardware</example>
     public string? ExpenseCategory { get; set; }
+
+    /// <summary>
+    /// Gets the JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin.
+    /// </summary>
+    public string DisplayTemplate
+    {
+        get
+        {
+            return $"$.templates.{(Amount < 0 ? "debit" : "credit")}";
+        }
+    }
 }
