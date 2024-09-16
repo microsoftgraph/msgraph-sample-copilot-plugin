@@ -134,9 +134,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/TransactionListResponse'
         '400':
           description: Bad Request
           content:
@@ -227,8 +225,31 @@ components:
           description: Gets or sets the expense category for charges against the budget.
           nullable: true
           example: hardware
+        displayTemplate:
+          type: string
+          description: Gets the JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin.
+          nullable: true
+          readOnly: true
       additionalProperties: false
       description: Represents a change to a budget's available funds.
+    TransactionListResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+          description: Gets the API response payload.
+          nullable: true
+        templates:
+          type: object
+          additionalProperties:
+            nullable: true
+          description: Gets the Adaptive Card templates.
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      description: Represents an API response payload that includes a list of transactions and a list of Adaptive Card templates.
   securitySchemes:
     OAuth2:
       type: oauth2
