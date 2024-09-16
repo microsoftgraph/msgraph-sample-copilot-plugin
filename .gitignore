@@ -396,3 +396,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+appsettings.Development.json
+openapi/**/*.yml
+openapi/**/*.json
+plugin/**/*.json
+plugin/**/*.yml
+*.zip
+.kiota/
+BudgetTracker-DevTunnel.http

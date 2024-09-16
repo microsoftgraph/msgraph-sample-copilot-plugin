@@ -1,0 +1,233 @@
+{
+    "$schema": "https://aka.ms/json-schemas/copilot-extensions/v2.1/plugin.schema.json",
+    "schema_version": "v2.1",
+    "name_for_human": "Budget Tracker",
+    "description_for_human": "<Please add description of the plugin>",
+    "namespace": "budgettracker",
+    "functions": [
+        {
+            "name": "GetBudgets",
+            "description": "Returns details including name and available funds of budgets, optionally filtered by budget name",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.name",
+                        "subtitle": "$.availableFunds"
+                    },
+                    "static_template": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "Container",
+                                "$data": "${$root}",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "name: ${if(name, name, 'N/A')}",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "availableFunds: ${if(availableFunds, availableFunds, 'N/A')}",
+                                        "wrap": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "CreateBudget",
+            "description": "Create a new budget with a specified name and available funds",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.name",
+                        "subtitle": "$.availableFunds"
+                    },
+                    "static_template": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "TextBlock",
+                                "text": "name: ${if(name, name, 'N/A')}",
+                                "wrap": true
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "availableFunds: ${if(availableFunds, availableFunds, 'N/A')}",
+                                "wrap": true
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetTransactions",
+            "description": "Returns details of transactions identified from filters like budget name or category. Multiple filters can be used in combination to refine the list of transactions returned",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.budgetName",
+                        "subtitle": "$.description"
+                    },
+                    "static_template": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "Container",
+                                "$data": "${$root}",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "budgetName: ${if(budgetName, budgetName, 'N/A')}",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "amount: ${if(amount, amount, 'N/A')}",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "description: ${if(description, description, 'N/A')}",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "expenseCategory: ${if(expenseCategory, expenseCategory, 'N/A')}",
+                                        "wrap": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "ChargeBudget",
+            "description": "Charge an amount to a budget with a specified name. This removes the specified amount from the budget's available funds",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.message"
+                    },
+                    "static_template": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "TextBlock",
+                                "text": "message: ${if(message, message, 'N/A')}",
+                                "wrap": true
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "ExtendBudget",
+            "description": "Add an amount to a budget with a specified name. This adds the specified amount to the budget's available funds",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.message"
+                    },
+                    "static_template": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "TextBlock",
+                                "text": "message: ${if(message, message, 'N/A')}",
+                                "wrap": true
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "SendTransactionReport",
+            "description": "Sends a transaction report via email, optionally filtered by budget.",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.message"
+                    },
+                    "static_template": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "TextBlock",
+                                "text": "message: ${if(message, message, 'N/A')}",
+                                "wrap": true
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "runtimes": [
+        {
+            "type": "OpenApi",
+            "auth": {
+                "type": "OAuthPluginVault",
+                "reference_id": "${{OAUTH2_CONFIGURATION_ID}}"
+            },
+            "spec": {
+                "url": "apiSpecificationFile/openapi.yaml"
+            },
+            "run_for_functions": [
+                "GetBudgets",
+                "CreateBudget",
+                "GetTransactions",
+                "ChargeBudget",
+                "ExtendBudget",
+                "SendTransactionReport"
+            ]
+        }
+    ],
+    "capabilities": {
+        "localization": {},
+        "conversation_starters": [
+            {
+                "text": "Get budgets based on budget name"
+            },
+            {
+                "text": "Create a new budget"
+            },
+            {
+                "text": "Get transactions based on budget name or category"
+            },
+            {
+                "text": "Charge an amount to a budget"
+            },
+            {
+                "text": "Add an amount to a budget"
+            }
+        ]
+    }
+}

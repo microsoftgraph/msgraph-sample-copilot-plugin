@@ -1,0 +1,264 @@
+openapi: 3.0.1
+info:
+  title: BudgetTracker
+  version: '1.0'
+servers:
+- url: https://localhost:7196
+paths:
+  /budgets:
+    get:
+      tags:
+      - BudgetsEndpoint
+      summary: Get budgets based on budget name
+      description: 'Returns details including name and available funds of budgets, optionally filtered by budget name'
+      operationId: GetBudgets
+      parameters:
+      - name: budgetName
+        in: query
+        description: The name of the budget to retrieve
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Budget'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    post:
+      tags:
+      - BudgetsEndpoint
+      summary: Create a new budget
+      description: Create a new budget with a specified name and available funds
+      operationId: CreateBudget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Budget'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /budgets/charge:
+    post:
+      tags:
+      - BudgetsEndpoint
+      summary: Charge an amount to a budget
+      description: Charge an amount to a budget with a specified name. This removes the specified amount from the budget's available funds
+      operationId: ChargeBudget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /budgets/extend:
+    post:
+      tags:
+      - BudgetsEndpoint
+      summary: Add an amount to a budget
+      description: Add an amount to a budget with a specified name. This adds the specified amount to the budget's available funds
+      operationId: ExtendBudget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /transactions:
+    get:
+      tags:
+      - TransactionsEndpoint
+      summary: Get transactions based on budget name or category
+      description: Returns details of transactions identified from filters like budget name or category. Multiple filters can be used in combination to refine the list of transactions returned
+      operationId: GetTransactions
+      parameters:
+      - name: budgetName
+        in: query
+        description: The name of the budget to filter results on
+        schema:
+          type: string
+      - name: category
+        in: query
+        description: The name of the category to filter results on
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /transactions/send:
+    post:
+      tags:
+      - TransactionsEndpoint
+      summary: Send a transaction report to my email
+      description: 'Sends a transaction report via email, optionally filtered by budget.'
+      operationId: SendTransactionReport
+      parameters:
+      - name: budgetName
+        in: query
+        description: The name of the budget to filter report on
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-openai-isConsequential: false
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Gets the response message.
+          nullable: true
+          example: 1000 has been deducted from Contoso Copilot plugin project. The budget has 49000 remaining in available funds.
+      additionalProperties: false
+      description: Represents an API response.
+    Budget:
+      required:
+      - availableFunds
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+          description: Gets or sets the name of the budget.
+          example: Contoso Copilot plugin project
+        availableFunds:
+          type: number
+          description: Gets or sets the available funds in the budget.
+          format: double
+          example: 50000
+      additionalProperties: false
+      description: Represents a project budget.
+    Transaction:
+      required:
+      - amount
+      - budgetName
+      - description
+      type: object
+      properties:
+        budgetName:
+          minLength: 1
+          type: string
+          description: Gets or sets the name of the budget to adjust.
+          example: Contoso Copilot plugin project
+        amount:
+          type: number
+          description: Gets or sets the amount of the adjustment.
+          format: double
+          example: -5000
+        description:
+          minLength: 1
+          type: string
+          description: Gets or sets a description for the change.
+          example: Purchase new laptops for team
+        expenseCategory:
+          type: string
+          description: Gets or sets the expense category for charges against the budget.
+          nullable: true
+          example: hardware
+        displayTemplate:
+          type: string
+          description: Gets the JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin.
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      description: Represents a change to a budget's available funds.
+    TransactionListResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+          description: Gets the API response payload.
+          nullable: true
+        templates:
+          type: object
+          additionalProperties:
+            nullable: true
+          description: Gets the Adaptive Card templates.
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      description: Represents an API response payload that includes a list of transactions and a list of Adaptive Card templates.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token
+          scopes:
+            api://{client-id}/.default: Access Budget Tracker as you
+security:
+- OAuth2:
+  - api://{client-id}/.default
