@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Text.Json;
 using BudgetTracker.Models;
 using BudgetTracker.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
+using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 using Microsoft.OpenApi.Any;
 
@@ -78,7 +78,7 @@ public static class TransactionsEndpoint
         }
     }
 
-    private static async Task<Results<Accepted<ApiResponse>, BadRequest<ApiResponse>>> SendTransactionReport(
+    private static async Task<Results<Accepted<ApiResponse>, BadRequest<ApiResponse>, UnauthorizedHttpResult>> SendTransactionReport(
         HttpContext context,
         [FromQuery] string? budgetName,
         [FromServices] BudgetService budgetService,
@@ -136,6 +136,12 @@ public static class TransactionsEndpoint
             return TypedResults.Accepted(
                 uri: string.Empty,
                 value: new ApiResponse("Transaction report sent."));
+        }
+        catch (MicrosoftIdentityWebChallengeUserException ex)
+        {
+            logger.LogError("⛔ POST {api} returning 401, user consent needed", apiPath);
+            context.Response.Headers.WWWAuthenticate = $"Bearer claims={ex.MsalUiRequiredException.Claims}, error={ex.MsalUiRequiredException.Message}";
+            return TypedResults.Unauthorized();
         }
         catch (Exception ex)
         {
