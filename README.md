@@ -33,7 +33,9 @@ To configure the sample, you will need to generate a number of values. For clari
 
 ### Create a persistent dev tunnel
 
-1. If you do not have the `devtunnel` CLI installed, see [Create and host a dev tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/get-started#install) for installation instructions.
+If you do not have the `devtunnel` CLI installed, see [Create and host a dev tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/get-started#install) for installation instructions.
+
+1. If you are not already logged in to the devtunnel CLI, use `devtunnel user login --help` to see the available login options. Login to the CLI before proceeding.
 
 1. Create the tunnel.
 
