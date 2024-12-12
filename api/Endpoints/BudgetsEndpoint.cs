@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.ComponentModel;
 using BudgetTracker.Models;
 using BudgetTracker.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
-using Microsoft.OpenApi.Any;
 
 namespace BudgetTracker.Endpoints;
 
@@ -29,12 +29,6 @@ public static class BudgetsEndpoint
             .WithName("GetBudgets")
             .WithSummary("Get budgets based on budget name")
             .WithDescription("Returns details including name and available funds of budgets, optionally filtered by budget name")
-            .WithOpenApi(operation =>
-            {
-                operation.Parameters[0].Description = "The name of the budget to retrieve";
-                operation.Parameters[0].Required = false;
-                return operation;
-            })
             .RequireAuthorization();
 
         app.MapPost(Endpoint, CreateBudget)
@@ -46,21 +40,19 @@ public static class BudgetsEndpoint
         app.MapPost($"{Endpoint}/charge", ChargeBudget)
             .WithName("ChargeBudget")
             .WithSummary("Charge an amount to a budget")
-            .WithDescription("Charge an amount to a budget with a specified name. This removes the specified amount from the budget's available funds")
-            .WithOpenApi()
+            .WithDescription("Charge an amount to a budget with a specified name, removing the amount from available funds")
             .RequireAuthorization();
 
         app.MapPost($"{Endpoint}/extend", ExtendBudget)
             .WithName("ExtendBudget")
             .WithSummary("Add an amount to a budget")
-            .WithDescription("Add an amount to a budget with a specified name. This adds the specified amount to the budget's available funds")
-            .WithOpenApi()
+            .WithDescription("Add an amount to a budget with a specified name, adding the amount to available funds")
             .RequireAuthorization();
     }
 
     private static Results<Ok<List<Budget>>, BadRequest<ApiResponse>> GetBudgets(
         HttpContext context,
-        [FromQuery] string? budgetName,
+        [FromQuery][Description("The name of the budget to retrieve")] string? budgetName,
         [FromServices] BudgetService budgetService,
         [FromServices] ILogger<Program> logger)
     {

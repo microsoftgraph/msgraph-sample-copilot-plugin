@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.ComponentModel;
 using System.Text.Json;
 using AdaptiveCards;
 
@@ -18,11 +19,13 @@ public class TransactionListResponse(List<Transaction> transactions)
     /// <summary>
     /// Gets the API response payload.
     /// </summary>
+    [Description("The list of transactions in the API response")]
     public List<Transaction> Transactions { get; private set; } = transactions;
 
     /// <summary>
     /// Gets the Adaptive Card templates.
     /// </summary>
+    [Description("Adaptive Card templates")]
     public Dictionary<string, JsonDocument?> Templates { get; private set; } = new()
     {
         { "debit", GetDebitTransactionCard() },
