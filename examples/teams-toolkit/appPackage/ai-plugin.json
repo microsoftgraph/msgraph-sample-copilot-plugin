@@ -1,9 +1,9 @@
 {
-    "$schema": "https://aka.ms/json-schemas/copilot-extensions/v2.1/plugin.schema.json",
-    "schema_version": "v2.1",
-    "name_for_human": "Budget Tracker",
+    "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.2/schema.json",
+    "schema_version": "v2.2",
+    "name_for_human": "Budget Buddy",
     "description_for_human": "<Please add description of the plugin>",
-    "namespace": "budgettracker",
+    "namespace": "budgetbuddy",
     "functions": [
         {
             "name": "GetBudgets",
@@ -26,12 +26,12 @@
                                 "items": [
                                     {
                                         "type": "TextBlock",
-                                        "text": "name: ${if(name, name, 'N/A')}",
+                                        "text": "Name: ${if(name, name, 'N/A')}",
                                         "wrap": true
                                     },
                                     {
                                         "type": "TextBlock",
-                                        "text": "availableFunds: ${if(availableFunds, availableFunds, 'N/A')}",
+                                        "text": "Available funds: ${if(availableFunds, availableFunds, 'N/A')}",
                                         "wrap": true
                                     }
                                 ]
@@ -58,12 +58,12 @@
                         "body": [
                             {
                                 "type": "TextBlock",
-                                "text": "name: ${if(name, name, 'N/A')}",
+                                "text": "Name: ${if(name, name, 'N/A')}",
                                 "wrap": true
                             },
                             {
                                 "type": "TextBlock",
-                                "text": "availableFunds: ${if(availableFunds, availableFunds, 'N/A')}",
+                                "text": "Available funds: ${if(availableFunds, availableFunds, 'N/A')}",
                                 "wrap": true
                             }
                         ]
@@ -73,53 +73,19 @@
         },
         {
             "name": "GetTransactions",
-            "description": "Returns details of transactions identified from filters like budget name or category. Multiple filters can be used in combination to refine the list of transactions returned",
+            "description": "Returns details of transactions identified from filters like budget name or category",
             "capabilities": {
                 "response_semantics": {
-                    "data_path": "$",
+                    "data_path": "$.transactions",
                     "properties": {
-                        "title": "$.budgetName",
-                        "subtitle": "$.description"
-                    },
-                    "static_template": {
-                        "type": "AdaptiveCard",
-                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "version": "1.5",
-                        "body": [
-                            {
-                                "type": "Container",
-                                "$data": "${$root}",
-                                "items": [
-                                    {
-                                        "type": "TextBlock",
-                                        "text": "budgetName: ${if(budgetName, budgetName, 'N/A')}",
-                                        "wrap": true
-                                    },
-                                    {
-                                        "type": "TextBlock",
-                                        "text": "amount: ${if(amount, amount, 'N/A')}",
-                                        "wrap": true
-                                    },
-                                    {
-                                        "type": "TextBlock",
-                                        "text": "description: ${if(description, description, 'N/A')}",
-                                        "wrap": true
-                                    },
-                                    {
-                                        "type": "TextBlock",
-                                        "text": "expenseCategory: ${if(expenseCategory, expenseCategory, 'N/A')}",
-                                        "wrap": true
-                                    }
-                                ]
-                            }
-                        ]
+                        "template_selector": "$.displayTemplate"
                     }
                 }
             }
         },
         {
             "name": "ChargeBudget",
-            "description": "Charge an amount to a budget with a specified name. This removes the specified amount from the budget's available funds",
+            "description": "Charge an amount to a budget with a specified name, removing the amount from available funds",
             "capabilities": {
                 "response_semantics": {
                     "data_path": "$",
@@ -143,7 +109,7 @@
         },
         {
             "name": "ExtendBudget",
-            "description": "Add an amount to a budget with a specified name. This adds the specified amount to the budget's available funds",
+            "description": "Add an amount to a budget with a specified name, adding the amount to available funds",
             "capabilities": {
                 "response_semantics": {
                     "data_path": "$",
@@ -167,7 +133,7 @@
         },
         {
             "name": "SendTransactionReport",
-            "description": "Sends a transaction report via email, optionally filtered by budget.",
+            "description": "Sends a transaction report via email, optionally filtered by budget",
             "capabilities": {
                 "response_semantics": {
                     "data_path": "$",
@@ -198,7 +164,7 @@
                 "reference_id": "${{OAUTH2_CONFIGURATION_ID}}"
             },
             "spec": {
-                "url": "apiSpecificationFile/openapi.yaml"
+                "url": "apiSpecificationFile/openapi.json"
             },
             "run_for_functions": [
                 "GetBudgets",
@@ -211,7 +177,6 @@
         }
     ],
     "capabilities": {
-        "localization": {},
         "conversation_starters": [
             {
                 "text": "Get budgets based on budget name"
