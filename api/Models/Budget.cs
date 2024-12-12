@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BudgetTracker.Models;
@@ -15,6 +16,7 @@ public class Budget
     /// </summary>
     /// <example>Contoso Copilot plugin project</example>
     [Required]
+    [Description("The name of the budget")]
     public string? Name { get; set; }
 
     /// <summary>
@@ -22,5 +24,6 @@ public class Budget
     /// </summary>
     /// <example>50000</example>
     [Required]
+    [Description("The available funds in the budget")]
     public decimal AvailableFunds { get; set; }
 }

@@ -20,7 +20,7 @@
       "serverReadyAction": {
         "action": "openExternally",
         "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
-        "uriFormat": "%s/swagger"
+        "uriFormat": "%s/openapi/BudgetTracker.json"
       },
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"

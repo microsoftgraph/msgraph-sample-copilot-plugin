@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "BudgetTracker",
-    "version": "1.0"
+    "title": "BudgetTracker | v1",
+    "version": "1.0.0"
   },
   "servers": [
     {
@@ -101,7 +101,7 @@
           "BudgetsEndpoint"
         ],
         "summary": "Charge an amount to a budget",
-        "description": "Charge an amount to a budget with a specified name. This removes the specified amount from the budget's available funds",
+        "description": "Charge an amount to a budget with a specified name, removing the amount from available funds",
         "operationId": "ChargeBudget",
         "requestBody": {
           "content": {
@@ -143,7 +143,7 @@
           "BudgetsEndpoint"
         ],
         "summary": "Add an amount to a budget",
-        "description": "Add an amount to a budget with a specified name. This adds the specified amount to the budget's available funds",
+        "description": "Add an amount to a budget with a specified name, adding the amount to available funds",
         "operationId": "ExtendBudget",
         "requestBody": {
           "content": {
@@ -185,7 +185,7 @@
           "TransactionsEndpoint"
         ],
         "summary": "Get transactions based on budget name or category",
-        "description": "Returns details of transactions identified from filters like budget name or category. Multiple filters can be used in combination to refine the list of transactions returned",
+        "description": "Returns details of transactions identified from filters like budget name or category",
         "operationId": "GetTransactions",
         "parameters": [
           {
@@ -235,7 +235,7 @@
           "TransactionsEndpoint"
         ],
         "summary": "Send a transaction report to my email",
-        "description": "Sends a transaction report via email, optionally filtered by budget.",
+        "description": "Sends a transaction report via email, optionally filtered by budget",
         "operationId": "SendTransactionReport",
         "parameters": [
           {
@@ -276,84 +276,75 @@
   "components": {
     "schemas": {
       "ApiResponse": {
+        "required": [
+          "message"
+        ],
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
-            "description": "Gets the response message.",
-            "nullable": true,
-            "example": "1000 has been deducted from Contoso Copilot plugin project. The budget has 49000 remaining in available funds."
+            "description": "The response message"
           }
-        },
-        "additionalProperties": false,
-        "description": "Represents an API response."
+        }
       },
       "Budget": {
         "required": [
-          "availableFunds",
-          "name"
+          "name",
+          "availableFunds"
         ],
         "type": "object",
         "properties": {
           "name": {
-            "minLength": 1,
             "type": "string",
-            "description": "Gets or sets the name of the budget.",
-            "example": "Contoso Copilot plugin project"
+            "description": "The name of the budget",
+            "nullable": true
           },
           "availableFunds": {
             "type": "number",
-            "description": "Gets or sets the available funds in the budget.",
-            "format": "double",
-            "example": 50000
+            "description": "The available funds in the budget",
+            "format": "double"
           }
-        },
-        "additionalProperties": false,
-        "description": "Represents a project budget."
+        }
       },
       "Transaction": {
         "required": [
-          "amount",
           "budgetName",
+          "amount",
           "description"
         ],
         "type": "object",
         "properties": {
           "budgetName": {
-            "minLength": 1,
             "type": "string",
-            "description": "Gets or sets the name of the budget to adjust.",
-            "example": "Contoso Copilot plugin project"
+            "description": "The name of the budget to adjust",
+            "nullable": true
           },
           "amount": {
             "type": "number",
-            "description": "Gets or sets the amount of the adjustment.",
-            "format": "double",
-            "example": -5000
+            "description": "The amount of the adjustment",
+            "format": "double"
           },
           "description": {
-            "minLength": 1,
             "type": "string",
-            "description": "Gets or sets a description for the change.",
-            "example": "Purchase new laptops for team"
+            "description": "The description for the change",
+            "nullable": true
           },
           "expenseCategory": {
             "type": "string",
-            "description": "Gets or sets the expense category for charges against the budget.",
-            "nullable": true,
-            "example": "hardware"
+            "description": "The expense category for charges against the budget",
+            "nullable": true
           },
           "displayTemplate": {
             "type": "string",
-            "description": "Gets the JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin.",
-            "nullable": true,
-            "readOnly": true
+            "description": "The JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin",
+            "nullable": true
           }
-        },
-        "additionalProperties": false,
-        "description": "Represents a change to a budget's available funds."
+        }
       },
       "TransactionListResponse": {
+        "required": [
+          "transactions"
+        ],
         "type": "object",
         "properties": {
           "transactions": {
@@ -361,21 +352,13 @@
             "items": {
               "$ref": "#/components/schemas/Transaction"
             },
-            "description": "Gets the API response payload.",
-            "nullable": true
+            "description": "The list of transactions in the API response"
           },
           "templates": {
             "type": "object",
-            "additionalProperties": {
-              "nullable": true
-            },
-            "description": "Gets the Adaptive Card templates.",
-            "nullable": true,
-            "readOnly": true
+            "description": "Adaptive Card templates"
           }
-        },
-        "additionalProperties": false,
-        "description": "Represents an API response payload that includes a list of transactions and a list of Adaptive Card templates."
+        }
       }
     },
     "securitySchemes": {
@@ -385,6 +368,7 @@
           "authorizationCode": {
             "authorizationUrl": "https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/authorize",
             "tokenUrl": "https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token",
+            "refreshUrl": "https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token",
             "scopes": {
               "api://{client-id}/.default": "Access Budget Tracker as you"
             }
@@ -398,6 +382,14 @@
       "OAuth2": [
         "api://{client-id}/.default"
       ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "BudgetsEndpoint"
+    },
+    {
+      "name": "TransactionsEndpoint"
     }
   ]
 }

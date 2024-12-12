@@ -5,8 +5,14 @@
       "label": "build",
       "command": "dotnet",
       "type": "process",
+      "options": {
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      },
       "args": [
         "build",
+        "--no-incremental",
         "${workspaceFolder}/api/BudgetTracker.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
@@ -34,6 +40,20 @@
         "run",
         "--project",
         "${workspaceFolder}/api/BudgetTracker.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "gen-samples",
+      "detail": "Generate sample OpenAPI with placeholders",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "--no-incremental",
+        "${workspaceFolder}/api/BudgetTracker.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
       "problemMatcher": "$msCompile"
     }
