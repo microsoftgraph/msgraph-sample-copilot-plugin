@@ -18,6 +18,7 @@
     ".vscode",
     ".vscode-insiders",
     ".gitignore",
-    "*.csproj"
+    "*.csproj",
+    "examples/**"
   ]
 }
