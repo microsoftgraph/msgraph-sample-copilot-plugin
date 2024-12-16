@@ -33,7 +33,9 @@ To configure the sample, you will need to generate a number of values. For clari
 
 ### Create a persistent dev tunnel
 
-1. If you do not have the `devtunnel` CLI installed, see [Create and host a dev tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/get-started#install) for installation instructions.
+If you do not have the `devtunnel` CLI installed, see [Create and host a dev tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/get-started#install) for installation instructions.
+
+1. If you are not already logged in to the devtunnel CLI, use `devtunnel user login --help` to see the available login options. Login to the CLI before proceeding.
 
 1. Create the tunnel.
 
@@ -56,6 +58,9 @@ To configure the sample, you will need to generate a number of values. For clari
     ```
 
 1. For the first time running this dev tunnel, copy the URL labeled **Connect via browser**. Open this URL in your browser and select **Continue** to enable the tunnel.
+
+    > [!NOTE]
+    > After selecting **Continue**, your browser will display an error. This is expected and can be ignored.
 
 1. Save the URL as your **API base URL**.
 
@@ -157,7 +162,7 @@ In this step, you add the **Plugin client ID** value to the API registration to 
 
 1. Select **Manifest** in the left-hand navigation.
 
-1. In the editor, locate the `knownClientApplications` property. Add your **Plugin client ID** to this value, then select **Save**.
+1. In the editor, locate the `knownClientApplications` property (inside the `api` property). Add your **Plugin client ID** to this value, then select **Save**.
 
     ```json
     "knownClientApplications": [
@@ -174,7 +179,7 @@ In this step, you add the **Plugin client ID** value to the API registration to 
     - Set `TenantId` to **Tenant ID**.
     - Set `ClientId` to **API client ID**.
     - Set `ClientSecret` to **API client secret**.
-    - Set `Audience` to `api://{client-secret}`, replacing `{client-secret}` with **API client ID**.
+    - Set `Audience` to `api://{client-id}`, replacing `{client-id}` with **API client ID**.
     - Set `ServerUrl` to **API base URL**.
 
 ## Run the sample

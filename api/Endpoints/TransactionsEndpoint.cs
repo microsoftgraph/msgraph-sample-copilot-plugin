@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.ComponentModel;
 using BudgetTracker.Models;
 using BudgetTracker.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
-using Microsoft.OpenApi.Any;
 
 namespace BudgetTracker.Endpoints;
 
@@ -28,37 +28,20 @@ public static class TransactionsEndpoint
         app.MapGet(Endpoint, GetTransactions)
             .WithName("GetTransactions")
             .WithSummary("Get transactions based on budget name or category")
-            .WithDescription("Returns details of transactions identified from filters like budget name or category. Multiple filters can be used in combination to refine the list of transactions returned")
-            .WithOpenApi(operation =>
-            {
-                operation.Parameters[0].Description = "The name of the budget to filter results on";
-                operation.Parameters[0].Required = false;
-                operation.Parameters[1].Description = "The name of the category to filter results on";
-                operation.Parameters[1].Required = false;
-                return operation;
-            })
+            .WithDescription("Returns details of transactions identified from filters like budget name or category")
             .RequireAuthorization();
 
         app.MapPost($"{Endpoint}/send", SendTransactionReport)
             .WithName("SendTransactionReport")
             .WithSummary("Send a transaction report to my email")
-            .WithDescription("Sends a transaction report via email, optionally filtered by budget.")
-            .WithOpenApi(operation =>
-            {
-                // Set this to false so Copilot will show an "always allow" option
-                operation.Extensions.Add("x-openai-isConsequential", new OpenApiBoolean(false));
-
-                operation.Parameters[0].Description = "The name of the budget to filter report on";
-                operation.Parameters[0].Required = false;
-                return operation;
-            })
+            .WithDescription("Sends a transaction report via email, optionally filtered by budget")
             .RequireAuthorization();
     }
 
     private static Results<Ok<TransactionListResponse>, BadRequest<ApiResponse>> GetTransactions(
         HttpContext context,
-        [FromQuery] string? budgetName,
-        [FromQuery] string? category,
+        [FromQuery][Description("The name of the budget to filter results on")] string? budgetName,
+        [FromQuery][Description("The name of the category to filter results on")] string? category,
         [FromServices] BudgetService budgetService,
         [FromServices] ILogger<Program> logger)
     {
@@ -80,7 +63,7 @@ public static class TransactionsEndpoint
 
     private static async Task<Results<Accepted<ApiResponse>, BadRequest<ApiResponse>, UnauthorizedHttpResult>> SendTransactionReport(
         HttpContext context,
-        [FromQuery] string? budgetName,
+        [FromQuery][Description("The name of the budget to filter report on")] string? budgetName,
         [FromServices] BudgetService budgetService,
         [FromServices] GraphServiceClient graphClient,
         [FromServices] ILogger<Program> logger)

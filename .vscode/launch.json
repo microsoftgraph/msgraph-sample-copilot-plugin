@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/api/bin/Debug/net8.0/BudgetTracker.dll",
+      "program": "${workspaceFolder}/api/bin/Debug/net9.0/BudgetTracker.dll",
       "args": [],
       "cwd": "${workspaceFolder}/api",
       "stopAtEntry": false,
@@ -20,7 +20,7 @@
       "serverReadyAction": {
         "action": "openExternally",
         "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
-        "uriFormat": "%s/swagger"
+        "uriFormat": "%s/openapi/BudgetTracker.json"
       },
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"

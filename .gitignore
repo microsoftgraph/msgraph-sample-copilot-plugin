@@ -405,5 +405,5 @@ plugin/**/*.yml
 *.zip
 .kiota/
 BudgetTracker-DevTunnel.http
-public-key.cer
+*.cer
 start-tunnel.bat
