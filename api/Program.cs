@@ -5,6 +5,7 @@ using System.Text;
 using BudgetTracker.Endpoints;
 using BudgetTracker.Models;
 using BudgetTracker.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -95,6 +96,11 @@ builder.Services.AddOpenApi((options) =>
         return Task.CompletedTask;
     });
 });
+
+// Configure valid audiences
+builder.Services.Configure<JwtBearerOptions>(
+    JwtBearerDefaults.AuthenticationScheme,
+    options => options.TokenValidationParameters.ValidAudiences = builder.Configuration.GetSection("AzureAd:Audiences").Get<string[]>());
 
 // Configure authentication
 builder.Services

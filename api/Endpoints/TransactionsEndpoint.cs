@@ -123,7 +123,8 @@ public static class TransactionsEndpoint
         catch (MicrosoftIdentityWebChallengeUserException ex)
         {
             logger.LogError("⛔ POST {api} returning 401, user consent needed", apiPath);
-            context.Response.Headers.WWWAuthenticate = $"Bearer claims={ex.MsalUiRequiredException.Claims}, error={ex.MsalUiRequiredException.Message}";
+            context.Response.Headers.WWWAuthenticate =
+                $"Bearer claims={ex.MsalUiRequiredException.Claims}, error={ex.MsalUiRequiredException.Message}";
             return TypedResults.Unauthorized();
         }
         catch (Exception ex)
