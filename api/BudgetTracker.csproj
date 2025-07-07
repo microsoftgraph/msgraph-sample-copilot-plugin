@@ -33,8 +33,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Identity.Web" Version="3.9.4" />
-    <PackageReference Include="Microsoft.Identity.Web.GraphServiceClient" Version="3.9.4" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.10.0" />
+    <PackageReference Include="Microsoft.Identity.Web.GraphServiceClient" Version="3.10.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
