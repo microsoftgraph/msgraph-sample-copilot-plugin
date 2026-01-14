@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+/* cSpell:ignore appsettings */
+
 using System.Text;
 using BudgetTracker.Endpoints;
 using BudgetTracker.Models;
@@ -28,6 +30,7 @@ builder.Services.AddOpenApi((options) =>
         if (!string.IsNullOrEmpty(settings.ServerUrl))
         {
             // Clear localhost entries added automatically
+            document.Servers ??= [];
             document.Servers.Clear();
             document.Servers.Add(new()
             {
