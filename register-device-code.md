@@ -20,7 +20,9 @@ For testing, you can register an application that supports user authentication u
 
 1. Open [BudgetTracker.http](./api/BudgetTracker.http) in Visual Studio Code.
 
-1. Replace all instances of `API_CLIENT_ID` with the **Application (client) ID** you generated in the previous steps.
+1. Replace all instances of `API_CLIENT_ID` with the **Application (client) ID** from the **Budget Tracker Service**.
+
+1. Replace all instances of `TEST_CLIENT_ID` with the **Application (client) ID** you generated in the previous steps.
 
 1. Replace all instances of `TENANT_ID` with the **Application (client) ID** you generated in the previous steps.
 
