@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.4",
   "info": {
     "title": "BudgetTracker | v1",
     "version": "1.0.0"
@@ -283,9 +283,11 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "The response message"
+            "description": "Gets the response message.",
+            "example": "1000 has been deducted from Contoso Copilot plugin project. The budget has 49000 remaining in available funds."
           }
-        }
+        },
+        "description": "Represents an API response."
       },
       "Budget": {
         "required": [
@@ -296,15 +298,18 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The name of the budget",
-            "nullable": true
+            "description": "Gets or sets the name of the budget.",
+            "nullable": true,
+            "example": "Contoso Copilot plugin project"
           },
           "availableFunds": {
-            "type": "number",
-            "description": "The available funds in the budget",
-            "format": "double"
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "description": "Gets or sets the available funds in the budget.",
+            "format": "double",
+            "example": 50000
           }
-        }
+        },
+        "description": "Represents a project budget."
       },
       "Transaction": {
         "required": [
@@ -316,30 +321,35 @@
         "properties": {
           "budgetName": {
             "type": "string",
-            "description": "The name of the budget to adjust",
-            "nullable": true
+            "description": "Gets or sets the name of the budget to adjust.",
+            "nullable": true,
+            "example": "Contoso Copilot plugin project"
           },
           "amount": {
-            "type": "number",
-            "description": "The amount of the adjustment",
-            "format": "double"
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "description": "Gets or sets the amount of the adjustment.",
+            "format": "double",
+            "example": -5000
           },
           "description": {
             "type": "string",
-            "description": "The description for the change",
-            "nullable": true
+            "description": "Gets or sets a description for the change.",
+            "nullable": true,
+            "example": "Purchase new laptops for team"
           },
           "expenseCategory": {
             "type": "string",
-            "description": "The expense category for charges against the budget",
-            "nullable": true
+            "description": "Gets or sets the expense category for charges against the budget.",
+            "nullable": true,
+            "example": "hardware"
           },
           "displayTemplate": {
             "type": "string",
-            "description": "The JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin",
+            "description": "Gets the JSONPath to the Adaptive Card template to use for rendering this transaction in an API plugin.",
             "nullable": true
           }
-        }
+        },
+        "description": "Represents a change to a budget's available funds."
       },
       "TransactionListResponse": {
         "required": [
@@ -352,13 +362,14 @@
             "items": {
               "$ref": "#/components/schemas/Transaction"
             },
-            "description": "The list of transactions in the API response"
+            "description": "Gets the API response payload."
           },
           "templates": {
             "type": "object",
-            "description": "Adaptive Card templates"
+            "description": "Gets the Adaptive Card templates."
           }
-        }
+        },
+        "description": "Represents an API response payload that includes a list of transactions and a list of Adaptive Card templates."
       }
     },
     "securitySchemes": {

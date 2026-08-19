@@ -3,7 +3,7 @@
 # @name GetBudgets
 GET {{BudgetTracker_HostAddress}}/budgets
 Accept: application/json
-Authorization: Bearer {{$aadV2Token scopes:api://API_CLIENT_ID/access_as_user tenantId:TENANT_ID clientId:API_CLIENT_ID}}
+Authorization: Bearer {{$aadV2Token scopes:api://API_CLIENT_ID/access_as_user tenantId:TENANT_ID clientId:TEST_CLIENT_ID}}
 
 ###
 # @name GetBudgetByName

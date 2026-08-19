@@ -11,7 +11,7 @@ The Budget Tracker API is a simple example of a REST API that can be used as the
 
 ## Prerequisites
 
-- [.NET SDK](https://dotnet.microsoft.com/) 8.x or later
+- [.NET SDK](https://dotnet.microsoft.com/) 10.x or later
 - [devtunnel CLI](https://learn.microsoft.com/azure/developer/dev-tunnels) for debugging sample locally
 - A Microsoft work or school account with an Exchange Online mailbox. If you don't have a Microsoft 365 tenant, you might qualify for one through the [Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program); for details, see the [FAQ](/office/developer-program/microsoft-365-developer-program-faq#who-qualifies-for-a-microsoft-365-e5-developer-subscription-). Alternatively, you can [sign up for a 1-month free trial or purchase a Microsoft 365 plan](https://www.microsoft.com/microsoft-365/try).
 

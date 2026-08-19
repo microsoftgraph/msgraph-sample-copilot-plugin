@@ -6,8 +6,9 @@ using BudgetTracker.Endpoints;
 using BudgetTracker.Models;
 using BudgetTracker.Services;
 using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
+
+/* cSpell:ignore appsettings */
 
 // To enable emoji's in logger output to the terminal
 Console.OutputEncoding = Encoding.UTF8;
@@ -18,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi((options) =>
 {
+    options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0;
+
     // Add document transform to add additional info
     options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
@@ -28,6 +31,7 @@ builder.Services.AddOpenApi((options) =>
         if (!string.IsNullOrEmpty(settings.ServerUrl))
         {
             // Clear localhost entries added automatically
+            document.Servers ??= [];
             document.Servers.Clear();
             document.Servers.Add(new()
             {
@@ -44,7 +48,8 @@ builder.Services.AddOpenApi((options) =>
 
         // Add the OAuth2 security scheme
         document.Components ??= new OpenApiComponents();
-        document.Components.SecuritySchemes.Add("OAuth2", new()
+        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+        document.Components.SecuritySchemes.Add("OAuth2", new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.OAuth2,
             Flows = new()
@@ -63,20 +68,12 @@ builder.Services.AddOpenApi((options) =>
         });
 
         // Add security requirement to all endpoints
-        document.SecurityRequirements.Add(new()
+        document.Security ??= [];
+        document.Security.Add(new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new()
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "OAuth2",
-                    },
-                },
-                [
-                    apiScope
-                ]
+                new OpenApiSecuritySchemeReference("OAuth2", document),
+                [apiScope]
             },
         });
 
@@ -89,7 +86,8 @@ builder.Services.AddOpenApi((options) =>
     {
         if (string.Compare(operation.OperationId, "SendTransactionReport", StringComparison.Ordinal) == 0)
         {
-            operation.Extensions.Add("x-openai-isConsequential", new OpenApiBoolean(false));
+            operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();
+            operation.Extensions.Add("x-openai-isConsequential", new JsonNodeExtension(false));
         }
 
         return Task.CompletedTask;
